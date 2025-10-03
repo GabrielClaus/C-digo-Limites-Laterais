@@ -1,0 +1,34 @@
+import sympy as sp
+from sympy import sqrt
+
+x = sp.symbols('x')
+
+
+expr_str = input("Digite a função em termos de x (ex: (sqrt(x) - 1)/(x - 1)): ")
+try:
+    f = sp.sympify(expr_str, locals={'sqrt': sp.sqrt}) 
+except sp.SympifyError as e:
+    print(f"Erro ao interpretar a função: {e}")
+    exit()
+
+
+try:
+    p = float(input("Digite o ponto p: "))
+except ValueError:
+    print("Entrada inválida para o ponto p. Deve ser um número.")
+    exit()
+
+print("-" * 30)
+lim_esq = sp.limit(f, x, p, dir='-')
+lim_dir = sp.limit(f, x, p, dir='+')
+
+print("Limite pela esquerda:", lim_esq)
+print("Limite pela direita:", lim_dir)
+print("-" * 30)
+
+if lim_esq == lim_dir:
+    L = lim_esq
+    print(f"O limite global existe e é {L}")
+    print(f"Logo, para ser contínua em x={p}, deve-se ter L = {L}")
+else:
+    print(f"O limite não existe em x={p}, logo a função é descontínua nesse ponto.")
